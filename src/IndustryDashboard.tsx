@@ -316,7 +316,7 @@ export default function IndustryDashboard() {
 
   async function copyExecutiveSummary() {
     const summary = [
-      'Resumo executivo · Ummix Indústria',
+      'Resumo executivo · Ummix Ads',
       `Público: ${baseAudience.title}`,
       `Praça: ${filters.city} · ${filters.shift}`,
       `Cenário: ${selectedScenarioInfo.label}`,
@@ -343,7 +343,7 @@ export default function IndustryDashboard() {
     <div className={styles.dashboardFrame}>
       <aside className={`${styles.sidebar} ${mobileNavOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.sidebarBrand}>
-          <span className={styles.logo} aria-label="Ummix">ummix</span>
+          <span className={styles.logo} aria-label="Ummix Ads">ummix ads</span>
         </div>
 
         <div className={styles.projectCard}>
@@ -374,7 +374,7 @@ export default function IndustryDashboard() {
 
         <div className={styles.sidebarFooter}>
           <strong><span className={styles.footerDot} aria-hidden="true" /> Dados agregados</strong>
-          <p>A Ummix lê a audiência e transforma o insight em mensagem no ar.</p>
+          <p>A Ummix Ads lê a audiência e transforma o insight em mensagem no ar.</p>
         </div>
       </aside>
 
@@ -417,7 +417,7 @@ export default function IndustryDashboard() {
           </div>
           <div className={styles.headerRow}>
             <div className={styles.headerCopy}>
-              <div className={styles.headerKicker}>Ummix · inteligência de audiência</div>
+              <div className={styles.headerKicker}>Ummix Ads · inteligência de audiência</div>
               <h1>Conexão que começa pela audiência.</h1>
               <p>Encontre onde e quando falar com as pessoas certas — e transforme o insight em uma mensagem que chega.</p>
             </div>
@@ -557,7 +557,7 @@ export default function IndustryDashboard() {
             <div className={styles.connectionProgress} aria-label={`Potencial de conexão de ${connectionProgress}%`}>
               <span style={{ width: `${connectionProgress}%` }} />
             </div>
-            <p className={styles.potentialNote}><Lightbulb size={14} aria-hidden="true" /> A Ummix entrega a leitura da audiência e a recomendação de mídia. A resposta acontece diretamente no rádio e na TV.</p>
+            <p className={styles.potentialNote}><Lightbulb size={14} aria-hidden="true" /> A Ummix Ads entrega a leitura da audiência e a recomendação de mídia. A resposta acontece diretamente no rádio e na TV.</p>
           </article>
         </section>
 
@@ -792,7 +792,7 @@ export default function IndustryDashboard() {
             <p>Este painel trabalha com estimativas agregadas de audiência. Ele não identifica pessoas nem entrega listas individuais: informa onde e quando a mensagem tem mais chance de chegar.</p>
           </div>
           <dl>
-            <div><dt>Fonte</dt><dd>Pesquisa de audiência Ummix</dd></div>
+              <div><dt>Fonte</dt><dd>Pesquisa de audiência Ummix Ads</dd></div>
             <div><dt>Modo</dt><dd>Dados demonstrativos</dd></div>
           </dl>
         </section>
@@ -802,7 +802,7 @@ export default function IndustryDashboard() {
         </div>
 
         <footer className={styles.pageFooter}>
-          <strong>Ummix Indústria</strong>
+          <strong>Ummix Ads</strong>
           <span>Preparado para o Desafio IndTechs · CRTI / Fieg</span>
           <span>Do insight à mensagem que chega.</span>
         </footer>

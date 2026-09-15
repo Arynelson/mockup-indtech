@@ -1,4 +1,4 @@
-# Ummix Indústria — Mockup independente
+# Ummix Ads — Mockup independente de indústria
 
 Mockup demonstrativo interativo para apresentação do painel de audiência aplicado à indústria.
 

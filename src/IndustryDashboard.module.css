@@ -48,12 +48,16 @@
 
 .logo {
   display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
   color: #fff;
   font-family: 'Baloo 2', Arial, sans-serif;
-  font-size: 1.9rem;
+  font-size: 1.65rem;
   font-weight: 900;
   letter-spacing: -0.1em;
   line-height: 0.8;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .projectCard {

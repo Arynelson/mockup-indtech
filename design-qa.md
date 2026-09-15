@@ -1,4 +1,4 @@
-# Design QA - Mockup Ummix Indústria
+# Design QA - Mockup Ummix Ads para Indústria
 
 ## Comparison target
 
@@ -32,10 +32,10 @@
 
 ## Required fidelity surfaces
 
-- Typography: keeps the Ummix Design System roles, Baloo 2 for headings and Plus Jakarta Sans for interface/body with fallbacks. The visual detector flags Plus Jakarta Sans as broadly used; it is intentionally retained because it is the Ummix brand token and preserves the supplied reference.
+- Typography: keeps the Ummix Ads Design System roles, Baloo 2 for headings and Plus Jakarta Sans for interface/body with fallbacks. The visual detector flags Plus Jakarta Sans as broadly used; it is intentionally retained because it is the Ummix Ads brand token and preserves the supplied reference.
 - Layout rhythm: cards, gaps, rounded corners and hierarchy follow the supplied reference; mobile changes only structural layout and navigation behavior.
 - Color: dark/mint/off-white palette follows the reference, with the Ummix canonical red used for the primary plan CTA and focus treatment.
-- Assets: the standalone app uses an inline Ummix wordmark and Lucide React icons; it does not import assets or components from `web/`.
+- Assets: the standalone app uses an inline Ummix Ads wordmark and Lucide React icons; it does not import assets or components from `web/`.
 - Copy: Portuguese copy is adapted to the industrial inclusion scenario; source numbers and copy are demonstrative content, not production claims.
 
 ## Independence checklist
