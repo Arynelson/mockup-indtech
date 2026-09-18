@@ -25,11 +25,14 @@ import {
 } from 'lucide-react';
 import styles from './IndustryDashboard.module.css';
 
-type ViewId = 'overview' | 'hour' | 'media' | 'handoff';
+type ViewId = 'overview' | 'profile' | 'hour' | 'media' | 'handoff';
 type AudienceId = 'industry' | 'support' | 'all';
 
 type Filters = {
   city: 'Grande Goiânia' | 'São Paulo' | 'Belo Horizonte';
+  disability: 'Todas' | 'Sim' | 'Não';
+  apprentice: 'Todos' | 'Sim' | 'Não';
+  ageRange: 'Todas' | '14 a 17 anos' | '18 a 24 anos' | '25 a 34 anos' | '35 anos ou mais';
   accessibility: 'Todas' | 'Acessibilidade física' | 'Comunicação acessível' | 'Tecnologia assistiva';
   professionalMoment: 'Em busca de oportunidade' | 'Em expansão' | 'Consolidado';
   shift: 'Todos os turnos' | '1º turno' | '2º turno' | '3º turno';
@@ -69,6 +72,9 @@ type Scenario = {
 
 const INITIAL_FILTERS: Filters = {
   city: 'Grande Goiânia',
+  disability: 'Todas',
+  apprentice: 'Todos',
+  ageRange: 'Todas',
   accessibility: 'Todas',
   professionalMoment: 'Em busca de oportunidade',
   shift: 'Todos os turnos',
@@ -77,9 +83,17 @@ const INITIAL_FILTERS: Filters = {
 
 const NAV_ITEMS: Array<{ id: ViewId; label: string; icon: LucideIcon }> = [
   { id: 'overview', label: 'Visão geral', icon: Target },
+  { id: 'profile', label: 'Perfil & Hábitos', icon: UsersRound },
   { id: 'hour', label: 'Hora a hora', icon: Clock3 },
   { id: 'media', label: 'Plano de mídia', icon: BarChart3 },
   { id: 'handoff', label: 'Encaminhamento', icon: ArrowRight },
+];
+
+const PLATFORM_STEPS: Array<{ n: number; label: string; view: ViewId }> = [
+  { n: 1, label: 'Campanha', view: 'overview' },
+  { n: 2, label: 'Configuração', view: 'overview' },
+  { n: 3, label: 'Público-Alvo', view: 'profile' },
+  { n: 4, label: 'Finalização', view: 'handoff' },
 ];
 
 const AUDIENCE_PRESETS: Record<AudienceId, AudiencePreset> = {
@@ -134,6 +148,15 @@ const AUDIENCE_PRESETS: Record<AudienceId, AudiencePreset> = {
 };
 
 const CITY_OPTIONS: Filters['city'][] = ['Grande Goiânia', 'São Paulo', 'Belo Horizonte'];
+const DISABILITY_OPTIONS: Filters['disability'][] = ['Todas', 'Sim', 'Não'];
+const APPRENTICE_OPTIONS: Filters['apprentice'][] = ['Todos', 'Sim', 'Não'];
+const AGE_RANGE_OPTIONS: Filters['ageRange'][] = [
+  'Todas',
+  '14 a 17 anos',
+  '18 a 24 anos',
+  '25 a 34 anos',
+  '35 anos ou mais',
+];
 const ACCESSIBILITY_OPTIONS: Filters['accessibility'][] = [
   'Todas',
   'Acessibilidade física',
@@ -203,6 +226,23 @@ function getCityMultiplier(city: Filters['city']): number {
 
 function getFilterMultiplier(filters: Filters): number {
   const cityMultiplier = getCityMultiplier(filters.city);
+  const disabilityMultiplier = {
+    Todas: 1,
+    Sim: 0.74,
+    Não: 0.9,
+  }[filters.disability];
+  const apprenticeMultiplier = {
+    Todos: 1,
+    Sim: 0.72,
+    Não: 0.96,
+  }[filters.apprentice];
+  const ageRangeMultiplier = {
+    Todas: 1,
+    '14 a 17 anos': 0.62,
+    '18 a 24 anos': 0.95,
+    '25 a 34 anos': 1.05,
+    '35 anos ou mais': 0.88,
+  }[filters.ageRange];
   const accessibilityMultiplier = {
     Todas: 1,
     'Acessibilidade física': 0.82,
@@ -226,7 +266,7 @@ function getFilterMultiplier(filters: Filters): number {
     'TV + Rádio': 1.16,
   }[filters.media];
 
-  return cityMultiplier * accessibilityMultiplier * momentMultiplier * shiftMultiplier * mediaMultiplier;
+  return cityMultiplier * disabilityMultiplier * apprenticeMultiplier * ageRangeMultiplier * accessibilityMultiplier * momentMultiplier * shiftMultiplier * mediaMultiplier;
 }
 
 function getInitials(): string {
@@ -246,6 +286,7 @@ export default function IndustryDashboard() {
   const [notice, setNotice] = useState<string | null>(null);
   const sectionRefs = useRef<Record<ViewId, HTMLElement | null>>({
     overview: null,
+    profile: null,
     hour: null,
     media: null,
     handoff: null,
@@ -282,6 +323,8 @@ export default function IndustryDashboard() {
     ? 'Encontre uma oportunidade na indústria. Saiba mais.'
     : `No ${filters.shift.toLowerCase()}, encontre uma oportunidade. Saiba mais.`;
   const recommendationReason = `${baseAudience.title} concentra o melhor sinal às ${String(bestHour).padStart(2, '0')}h na praça ${filters.city}. O ${selectedScenarioInfo.label.toLowerCase()} combina ${selectedScenarioInfo.summary.toLowerCase()}.`;
+  const profileSummary = `PCD: ${filters.disability} · Jovem Aprendiz: ${filters.apprentice} · Faixa: ${filters.ageRange}`;
+  const activePlatformStep = activeView === 'handoff' ? 4 : activeView === 'profile' ? 3 : activeView === 'hour' || activeView === 'media' ? 2 : 1;
 
   function navigateTo(view: ViewId) {
     setActiveView(view);
@@ -318,6 +361,7 @@ export default function IndustryDashboard() {
     const summary = [
       'Resumo executivo · Ummix Ads',
       `Público: ${baseAudience.title}`,
+      `Perfil & Hábitos: ${profileSummary}`,
       `Praça: ${filters.city} · ${filters.shift}`,
       `Cenário: ${selectedScenarioInfo.label}`,
       `Alcance estimado: ${formatNumber(scenarioReach)} pessoas`,
@@ -459,26 +503,31 @@ export default function IndustryDashboard() {
         <div className={styles.isolationBanner} role="note">
           <span className={styles.isolationIcon}><ShieldCheck size={15} aria-hidden="true" /></span>
           <span className={styles.isolationCopy}>
-            <strong>Mockup independente</strong>
-            <small>Experiência demonstrativa com valores simulados e sem conexão com a plataforma.</small>
+            <strong>Mockup independente · edital</strong>
+            <small>Experiência demonstrativa da Ummix Ads, com valores simulados e sem conexão com a plataforma.</small>
           </span>
           <span className={styles.isolationTag}>sem login · sem API</span>
         </div>
 
-        <div className={styles.processRail} aria-label="Etapas da leitura">
-          {NAV_ITEMS.map((item, index) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`${styles.processStep} ${activeView === item.id ? styles.processStepActive : ''}`}
-              onClick={() => navigateTo(item.id)}
-              aria-pressed={activeView === item.id}
-            >
-              <span className={styles.processDot} aria-hidden="true" />
-              <span>{item.label}</span>
-              {index < NAV_ITEMS.length - 1 ? <span className={styles.processSeparator} aria-hidden="true">|</span> : null}
-            </button>
-          ))}
+        <div className={styles.processRail} aria-label="Etapas da campanha">
+          {PLATFORM_STEPS.map((step, index) => {
+            const completed = activePlatformStep > step.n;
+            const active = activePlatformStep === step.n;
+            return (
+              <div key={step.n} className={styles.processItem}>
+                <button
+                  type="button"
+                  className={`${styles.processStep} ${active ? styles.processStepActive : ''} ${completed ? styles.processStepComplete : ''}`}
+                  onClick={() => navigateTo(step.view)}
+                  aria-pressed={active}
+                >
+                  <span className={styles.processNumber} aria-hidden="true">{completed ? <Check size={12} strokeWidth={3} /> : step.n}</span>
+                  <span>{step.label}</span>
+                </button>
+                {index < PLATFORM_STEPS.length - 1 ? <span className={`${styles.processConnector} ${completed ? styles.processConnectorComplete : ''}`} aria-hidden="true" /> : null}
+              </div>
+            );
+          })}
         </div>
 
         <section className={styles.heroGrid} aria-label="Perfil e potencial de conexão">
@@ -561,47 +610,89 @@ export default function IndustryDashboard() {
           </article>
         </section>
 
-        <section className={`${styles.card} ${styles.filtersCard}`} aria-labelledby="segmentation-title">
+        <section
+          className={`${styles.card} ${styles.filtersCard}`}
+          aria-labelledby="segmentation-title"
+          ref={(element) => { sectionRefs.current.profile = element; }}
+        >
           <div className={styles.sectionHeading}>
             <div>
               <span className={styles.eyebrow}>Segmentação</span>
-              <h2 id="segmentation-title">Refine a leitura</h2>
+              <h2 id="segmentation-title">Construa seu público</h2>
             </div>
             <button type="button" className={styles.clearButton} onClick={clearFilters}>Limpar</button>
           </div>
-          <div className={styles.filterGrid}>
-            <label className={styles.field}>
-              <span>Praça</span>
-              <select value={filters.city} onChange={(event) => updateFilter('city', event.currentTarget.value as Filters['city'])}>
-                {CITY_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
-              </select>
-            </label>
-            <label className={styles.field}>
-              <span>Necessidade de acessibilidade</span>
-              <select value={filters.accessibility} onChange={(event) => updateFilter('accessibility', event.currentTarget.value as Filters['accessibility'])}>
-                {ACCESSIBILITY_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
-              </select>
-            </label>
-            <label className={styles.field}>
-              <span>Momento profissional</span>
-              <select value={filters.professionalMoment} onChange={(event) => updateFilter('professionalMoment', event.currentTarget.value as Filters['professionalMoment'])}>
-                {MOMENT_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
-              </select>
-            </label>
-            <label className={styles.field}>
-              <span>Turno predominante</span>
-              <select value={filters.shift} onChange={(event) => updateFilter('shift', event.currentTarget.value as Filters['shift'])}>
-                {SHIFT_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
-              </select>
-            </label>
-            <label className={styles.field}>
-              <span>Tipo de mídia</span>
-              <select value={filters.media} onChange={(event) => updateFilter('media', event.currentTarget.value as Filters['media'])}>
-                {MEDIA_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
-              </select>
-            </label>
+          <div className={styles.filterGroup}>
+            <div className={styles.filterGroupHeading}>
+              <div>
+                <strong>Perfil &amp; Hábitos</strong>
+                <p>Defina quem a campanha precisa alcançar.</p>
+              </div>
+              <span className={styles.filterCount}>3 filtros</span>
+            </div>
+            <div className={styles.profileFilterGrid}>
+              <label className={styles.field} htmlFor="filter-disability">
+                <span>Pessoas com deficiência</span>
+                <select id="filter-disability" value={filters.disability} onChange={(event) => updateFilter('disability', event.currentTarget.value as Filters['disability'])}>
+                  {DISABILITY_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+              <label className={styles.field} htmlFor="filter-apprentice">
+                <span>Jovem Aprendiz</span>
+                <select id="filter-apprentice" value={filters.apprentice} onChange={(event) => updateFilter('apprentice', event.currentTarget.value as Filters['apprentice'])}>
+                  {APPRENTICE_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+              <label className={styles.field} htmlFor="filter-age-range">
+                <span>Faixa Etária</span>
+                <select id="filter-age-range" value={filters.ageRange} onChange={(event) => updateFilter('ageRange', event.currentTarget.value as Filters['ageRange'])}>
+                  {AGE_RANGE_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+            </div>
           </div>
-          <p className={styles.infoNote}><Info size={14} aria-hidden="true" /> O tipo de deficiência pode ser usado em análises agregadas quando houver base suficiente e consentimento específico.</p>
+          <div className={styles.filterGroup}>
+            <div className={styles.filterGroupHeading}>
+              <div>
+                <strong>Contexto de veiculação</strong>
+                <p>Combine praça, momento e mídia para orientar a recomendação.</p>
+              </div>
+              <span className={styles.filterCount}>5 filtros</span>
+            </div>
+            <div className={styles.contextFilterGrid}>
+              <label className={styles.field} htmlFor="filter-city">
+                <span>Praça</span>
+                <select id="filter-city" value={filters.city} onChange={(event) => updateFilter('city', event.currentTarget.value as Filters['city'])}>
+                  {CITY_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+              <label className={styles.field} htmlFor="filter-accessibility">
+                <span>Necessidade de acessibilidade</span>
+                <select id="filter-accessibility" value={filters.accessibility} onChange={(event) => updateFilter('accessibility', event.currentTarget.value as Filters['accessibility'])}>
+                  {ACCESSIBILITY_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+              <label className={styles.field} htmlFor="filter-professional-moment">
+                <span>Momento profissional</span>
+                <select id="filter-professional-moment" value={filters.professionalMoment} onChange={(event) => updateFilter('professionalMoment', event.currentTarget.value as Filters['professionalMoment'])}>
+                  {MOMENT_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+              <label className={styles.field} htmlFor="filter-shift">
+                <span>Turno predominante</span>
+                <select id="filter-shift" value={filters.shift} onChange={(event) => updateFilter('shift', event.currentTarget.value as Filters['shift'])}>
+                  {SHIFT_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+              <label className={styles.field} htmlFor="filter-media">
+                <span>Tipo de mídia</span>
+                <select id="filter-media" value={filters.media} onChange={(event) => updateFilter('media', event.currentTarget.value as Filters['media'])}>
+                  {MEDIA_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+            </div>
+          </div>
+          <p className={styles.infoNote}><Info size={14} aria-hidden="true" /> Os recortes de perfil são demonstrativos e devem ser usados em análises agregadas, com base suficiente e consentimento específico.</p>
         </section>
 
         <section className={styles.decisionSection} aria-labelledby="decision-title">
