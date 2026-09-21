@@ -28,7 +28,7 @@
 
 ## Evidence
 
-- Visual: desktop and mobile captures show the industrial flow translated into a responsive standalone page using the current platform language: neutral-900 sidebar, neutral-50 canvas, white cards, Arial typography, canonical red CTA, project context, four-stage progress rail (`Campanha`, `Configuração`, `Público-Alvo`, `Finalização`), audience/potential cards, filters, executive summary, scenario comparison, hourly chart, media ranking, plan CTA and transparency footer.
+- Visual: desktop and mobile captures show the industrial flow translated into a responsive standalone page using the current platform language: neutral-900 sidebar, neutral-50 canvas, white cards, Arial typography, canonical red CTA, project context, four-stage progress rail (`Campanha`, `Configuração`, `Público-Alvo`, `Finalização`), segmentation filters first, audience/potential cards second, executive summary, scenario comparison, hourly chart, media ranking, plan CTA and transparency footer.
 - Executive improvements: simulated investment, frequency, scenario reach, connection index, industrial shift filter, scenario comparison, rationale text and copy-summary action.
 - Interaction: audience selection updates metrics and media ranking; the three `Perfil & Hábitos` filters plus city, accessibility, professional moment, shift and media update estimates; scenario tabs update the executive summary; hourly bars update the selected time window; recommendation, plan, copy and clear actions expose feedback; mobile navigation opens and closes.
 - Browser console: no warning or error entries were returned in the final capture.

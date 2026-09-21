@@ -530,86 +530,6 @@ export default function IndustryDashboard() {
           })}
         </div>
 
-        <section className={styles.heroGrid} aria-label="Perfil e potencial de conexão">
-          <article className={`${styles.card} ${styles.audienceCard}`}>
-            <div className={styles.cardTopline}>
-              <span className={styles.eyebrow}>Perfil de audiência</span>
-              <span className={styles.stepTag}>01 / 03</span>
-            </div>
-            <h2>Para quem vamos falar?</h2>
-            <p className={styles.cardIntro}>Escolha um público para transformar a inteligência de mídia em uma ação de conexão.</p>
-
-            <div className={styles.profileOptions}>
-              {Object.values(AUDIENCE_PRESETS).map((profile) => {
-                const Icon = profile.icon;
-                const selected = selectedAudience === profile.id;
-                return (
-                  <button
-                    key={profile.id}
-                    type="button"
-                    className={`${styles.profileOption} ${selected ? styles.profileOptionSelected : ''}`}
-                    aria-pressed={selected}
-                    onClick={() => {
-                      setSelectedAudience(profile.id);
-                      setPlanReady(false);
-                      setNotice(null);
-                    }}
-                  >
-                    <span className={styles.profileIcon}><Icon size={16} strokeWidth={1.8} aria-hidden="true" /></span>
-                    <span className={styles.profileText}>
-                      <strong>{profile.title}</strong>
-                      <small>{profile.subtitle}</small>
-                    </span>
-                    <span className={styles.selectionMark} aria-hidden="true" />
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className={styles.selectedProfile}>
-              <span className={styles.selectedProfileIcon}><Check size={15} strokeWidth={2.3} aria-hidden="true" /></span>
-              <span>
-                <strong>{baseAudience.title}</strong>
-                <small>Filtros ativos · {filters.city} · {filters.shift}</small>
-              </span>
-              <span className={styles.selectedProfileStatus}>Leitura agregada</span>
-            </div>
-          </article>
-
-          <article className={`${styles.card} ${styles.potentialCard}`}>
-            <div className={styles.potentialTopline}>
-              <span className={styles.eyebrowLight}>Potencial de conexão</span>
-              <button type="button" className={styles.updatedButton} onClick={() => setNotice('Dados demonstrativos atualizados agora.') }>
-                <RefreshCw size={12} aria-hidden="true" /> Atualizado agora
-              </button>
-            </div>
-            <h2>A audiência no caminho</h2>
-            <div className={styles.metricsRow}>
-              <div className={styles.metricBlock}>
-                <span>Alcance estimado</span>
-                <strong>{formatNumber(audience.reach)}</strong>
-                <small>pessoas na praça</small>
-              </div>
-              <ArrowRight className={styles.metricArrow} size={16} aria-hidden="true" />
-              <div className={styles.metricBlock}>
-                <span>Afinidade do perfil</span>
-                <strong>{formatNumber(audience.affinity)}</strong>
-                <small>estimativa de afinidade</small>
-              </div>
-              <ArrowRight className={styles.metricArrow} size={16} aria-hidden="true" />
-              <div className={styles.metricBlock}>
-                <span>Resposta esperada</span>
-                <strong>{formatPercent(audience.response)}</strong>
-                <small>referência de campanha</small>
-              </div>
-            </div>
-            <div className={styles.connectionProgress} aria-label={`Potencial de conexão de ${connectionProgress}%`}>
-              <span style={{ width: `${connectionProgress}%` }} />
-            </div>
-            <p className={styles.potentialNote}><Lightbulb size={14} aria-hidden="true" /> A Ummix Ads entrega a leitura da audiência e a recomendação de mídia. A resposta acontece diretamente no rádio e na TV.</p>
-          </article>
-        </section>
-
         <section
           className={`${styles.card} ${styles.filtersCard}`}
           aria-labelledby="segmentation-title"
@@ -693,6 +613,86 @@ export default function IndustryDashboard() {
             </div>
           </div>
           <p className={styles.infoNote}><Info size={14} aria-hidden="true" /> Os recortes de perfil são demonstrativos e devem ser usados em análises agregadas, com base suficiente e consentimento específico.</p>
+        </section>
+
+        <section className={styles.heroGrid} aria-label="Perfil e potencial de conexão">
+          <article className={`${styles.card} ${styles.audienceCard}`}>
+            <div className={styles.cardTopline}>
+              <span className={styles.eyebrow}>Perfil de audiência</span>
+              <span className={styles.stepTag}>01 / 03</span>
+            </div>
+            <h2>Para quem vamos falar?</h2>
+            <p className={styles.cardIntro}>Escolha um público para transformar a inteligência de mídia em uma ação de conexão.</p>
+
+            <div className={styles.profileOptions}>
+              {Object.values(AUDIENCE_PRESETS).map((profile) => {
+                const Icon = profile.icon;
+                const selected = selectedAudience === profile.id;
+                return (
+                  <button
+                    key={profile.id}
+                    type="button"
+                    className={`${styles.profileOption} ${selected ? styles.profileOptionSelected : ''}`}
+                    aria-pressed={selected}
+                    onClick={() => {
+                      setSelectedAudience(profile.id);
+                      setPlanReady(false);
+                      setNotice(null);
+                    }}
+                  >
+                    <span className={styles.profileIcon}><Icon size={16} strokeWidth={1.8} aria-hidden="true" /></span>
+                    <span className={styles.profileText}>
+                      <strong>{profile.title}</strong>
+                      <small>{profile.subtitle}</small>
+                    </span>
+                    <span className={styles.selectionMark} aria-hidden="true" />
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className={styles.selectedProfile}>
+              <span className={styles.selectedProfileIcon}><Check size={15} strokeWidth={2.3} aria-hidden="true" /></span>
+              <span>
+                <strong>{baseAudience.title}</strong>
+                <small>Filtros ativos · {filters.city} · {filters.shift}</small>
+              </span>
+              <span className={styles.selectedProfileStatus}>Leitura agregada</span>
+            </div>
+          </article>
+
+          <article className={`${styles.card} ${styles.potentialCard}`}>
+            <div className={styles.potentialTopline}>
+              <span className={styles.eyebrowLight}>Potencial de conexão</span>
+              <button type="button" className={styles.updatedButton} onClick={() => setNotice('Dados demonstrativos atualizados agora.') }>
+                <RefreshCw size={12} aria-hidden="true" /> Atualizado agora
+              </button>
+            </div>
+            <h2>A audiência no caminho</h2>
+            <div className={styles.metricsRow}>
+              <div className={styles.metricBlock}>
+                <span>Alcance estimado</span>
+                <strong>{formatNumber(audience.reach)}</strong>
+                <small>pessoas na praça</small>
+              </div>
+              <ArrowRight className={styles.metricArrow} size={16} aria-hidden="true" />
+              <div className={styles.metricBlock}>
+                <span>Afinidade do perfil</span>
+                <strong>{formatNumber(audience.affinity)}</strong>
+                <small>estimativa de afinidade</small>
+              </div>
+              <ArrowRight className={styles.metricArrow} size={16} aria-hidden="true" />
+              <div className={styles.metricBlock}>
+                <span>Resposta esperada</span>
+                <strong>{formatPercent(audience.response)}</strong>
+                <small>referência de campanha</small>
+              </div>
+            </div>
+            <div className={styles.connectionProgress} aria-label={`Potencial de conexão de ${connectionProgress}%`}>
+              <span style={{ width: `${connectionProgress}%` }} />
+            </div>
+            <p className={styles.potentialNote}><Lightbulb size={14} aria-hidden="true" /> A Ummix Ads entrega a leitura da audiência e a recomendação de mídia. A resposta acontece diretamente no rádio e na TV.</p>
+          </article>
         </section>
 
         <section className={styles.decisionSection} aria-labelledby="decision-title">
